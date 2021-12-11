@@ -3,7 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "description": "Swapps Finance - The robust Smart Contract for Swapps Finance BEP20 Token.",
-  "repository": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dovellous/project-flashloans-uniswap-v3.git"
+  },
+  "keywords": [
+    "flashloans",
+    "uniswap"
+  ],
   "license": "UNLICENSED",
   "scripts": {
     "start": "npm run dev",
