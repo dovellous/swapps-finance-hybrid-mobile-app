@@ -1,0 +1,231 @@
+<template>
+	<div class="page" data-name="settings">
+		<div class="navbar">
+			<div class="navbar-bg"></div>
+			<div class="navbar-inner sliding">
+				<div class="title">Settings</div>
+				<div class="right">
+					<a href="#" class="link icon-only panel-open" data-panel="right">
+						<i class="icon f7-icons if-not-md">person</i>
+						<i class="icon material-icons if-md">perm_identity</i>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="page-content">
+			<form id="app-settings-form">
+				<div class="block-title">Notifications</div>
+				<div class="list no-hairlines-md">
+					<ul>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title">Allow push notification</div>
+									<div class="item-after">
+										<label class="toggle toggle-init">
+											<input name="allow_push_notifications" type="checkbox" @input="${updateSettingsAllowPushNotifications}" />
+											<span class="toggle-icon"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="block-title">Display</div>
+				<div class="list no-hairlines-md">
+					<ul>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title">Show my balances</div>
+									<div class="item-after">
+										<label class="toggle toggle-init">
+											<input name="show_balances" type="checkbox" @input="${updateSettingsShowBalances}" />
+											<span class="toggle-icon"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title">Enable Dark Theme</div>
+									<div class="item-after">
+										<label class="toggle toggle-init">
+											<input name="enable_dark_theme" type="checkbox" @input="${updateSettingsEnableDarkTheme}" />
+											<span class="toggle-icon"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="block-title">Security</div>
+				<div class="list no-hairlines-md">
+					<ul>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title">Auto-Lock this app</div>
+									<div class="item-after">
+										<label class="toggle toggle-init">
+											<input name="auto_lock" type="checkbox" @input="${updateSettingsAutoLock}" />
+											<span class="toggle-icon"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title">Enable 2 factor authentication</div>
+									<div class="item-after">
+										<label class="toggle toggle-init">
+											<input name="enable_2fa" type="checkbox" @input="${updateSettingsEnable2FA}" />
+											<span class="toggle-icon"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="block-title">Currency</div>
+				<div class="list">
+					<ul>
+						<li>
+							<label class="item-radio item-content">
+								<input type="radio" name="currency" value="USD" checked="checked" @input="${updateSettingsCurrency}" />
+								<i class="icon icon-radio"></i>
+								<div class="item-inner">
+									<div class="item-title">USD</div>
+								</div>
+							</label>
+						</li>
+						<li>
+							<label class="item-radio item-content">
+								<input type="radio" name="currency" value="EURO" @input="${updateSettingsCurrency}" />
+								<i class="icon icon-radio"></i>
+								<div class="item-inner">
+									<div class="item-title">EURO</div>
+								</div>
+							</label>
+						</li>
+						<li>
+							<label class="item-radio item-content">
+								<input type="radio" name="currency" value="POUND" @input="${updateSettingsCurrency}" />
+								<i class="icon icon-radio"></i>
+								<div class="item-inner">
+									<div class="item-title">POUND</div>
+								</div>
+							</label>
+						</li>
+						<li>
+							<label class="item-radio item-content">
+								<input type="radio" name="currency" value="BTC" @input="${updateSettingsCurrency}" />
+								<i class="icon icon-radio"></i>
+								<div class="item-inner">
+									<div class="item-title">BTC</div>
+								</div>
+							</label>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+	</div>
+</template>
+<script>
+export default (props, {$f7ready, $f7, $f7route, $on, $update, $store}) => {
+
+    let deviceInfo = {};
+
+    let isWeb = true;
+
+    let settingsAllowPushNotifications = ['on'];
+    let settingsShowBalances = ['on'];
+    let settingsEnableDarkTheme = [];
+    let settingsAutoLock = [];
+    let settingsEnable2FA = [];
+    let settingsCurrency = 'USD';
+
+    const updateSettingsAllowPushNotifications = function(e){
+        settingsAllowPushNotifications = e.target.value;
+        $update();
+    };
+
+    const updateSettingsShowBalances = function(e){
+        settingsShowBalances = e.target.value;
+        $update();
+    };
+
+    const updateSettingsEnableDarkTheme = function(e){
+        settingsEnableDarkTheme = e.target.value;
+        $update();
+    };
+
+    const updateSettingsAutoLock = function(e){
+        settingsAutoLock = e.target.value;
+        $update();
+    };
+
+    const updateSettingsEnable2FA = function(e){
+        settingsEnable2FA = e.target.value;
+        $update();
+    };
+
+    const updateSettingsCurrency = function(e){
+        settingsCurrency = e.target.value;
+        $update();
+    };
+
+    const updateSettings = (settingsData) => {
+
+        $f7.form.fillFromData('#app-settings-form', settingsData);
+
+    };
+
+    $on('pageInit', () => {
+
+        const _settings = $store.getters.settings.value;
+
+        updateSettings( _settings );
+
+        $('#app-settings-form').find('input').on('change', function () {
+
+            const settingsData = $f7.form.convertToData('#app-settings-form');
+
+            $f7.emit('SAVE_SETTINGS_FORM_UPDATED', settingsData);
+
+        });
+
+        $f7.on('SETTINGS_LOADED', function (settingsData) {
+
+            updateSettings( settingsData );
+
+        });
+
+        $f7.on('SETTINGS_SAVED', function (settingsData) {
+
+            updateSettings( settingsData );
+
+        });
+
+        $f7.on('SETTINGS_FILL_IN_FORM', function (settingsData) {
+
+            console.warn(":: FILL IN FORM ::");
+
+            $f7.form.fillFromData('#app-settings-form', settingsData);
+
+        });
+
+    });
+
+    return $render;
+
+}
+</script>

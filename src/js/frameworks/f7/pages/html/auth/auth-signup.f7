@@ -1,0 +1,441 @@
+<template>
+	<div class="page no-navbar no-toolbar no-swipeback">
+		<div class="page-content login-screen-content">
+			<div class="login-screen-title">
+				<img style="width: 30vw; max-width: 200px; margin: auto;" src="${imagesLogoUrl}"/>
+			</div>
+			<div class="login-screen-title">
+				Create an account
+			</div>
+			<form id="app-auth-sign-up-form">
+			<div class="block list">
+				<ul>
+				<li class="item-content item-input item-input-outline">
+					<div class="item-inner">
+						<div class="item-title item-floating-label">First Name</div>
+						<div class="item-input-wrap">
+							<input name="firstname" type="text" placeholder="Enter your first / given name" required validate data-validate-on-blur="true"
+							@input="${updateSignInFirstname}"/>
+							<span class="input-clear-button"></span>
+						</div>
+					</div>
+				</li>
+				<li class="item-content item-input item-input-outline">
+					<div class="item-inner">
+						<div class="item-title item-floating-label">Last Name</div>
+						<div class="item-input-wrap">
+							<input name="lastname" type="text" placeholder="Enter your last / family name" required validate data-validate-on-blur="true"
+							@input="${updateSignInLastname}"/>
+							<span class="input-clear-button"></span>
+						</div>
+					</div>
+				</li>
+				<li class="item-content item-input item-input-outline">
+					<div class="item-inner">
+						<div class="item-title item-floating-label">Username / Email</div>
+						<div class="item-input-wrap">
+							<input name="email" type="email" placeholder="Enter your username / email" required validate
+							@input="${updateSignInEmail}"/>
+							<span class="input-clear-button"></span>
+						</div>
+					</div>
+				</li>
+				<li class="item-content item-input item-input-outline">
+				<div class="item-inner">
+					<div class="item-title item-floating-label">Password</div>
+					<div class="item-input-wrap">
+						<input name="password1" type="${showPasswordText ? 'text' : 'password' }" placeholder="Your password" required validate data-validate-on-blur="true"
+						@input="${updateSignInPassword1}"/>
+
+						${ !showPasswordText ? $h`
+
+						<span class="input-show-password-button" @click=${showPassword} >
+						<i class="f7-icons">eye</i>
+					</span>
+
+					` : $h`
+
+					<span class="input-show-password-button" @click=${hidePassword} >
+					<i class="f7-icons">eye_slash</i>
+				</span>
+
+				`}
+
+			</div>
+		</div>
+	</li>
+	<li class="item-content item-input item-input-outline">
+		<div class="item-inner">
+			<div class="item-title item-floating-label">Confirm Password</div>
+			<div class="item-input-wrap">
+				<input name="password2" type="password" placeholder="Enter your password again" required validate data-validate-on-blur="true"
+				@input="${updateSignInPassword2}"/>
+				<span class="input-clear-button"></span>
+			</div>
+		</div>
+	</li>
+</ul>
+		</div>
+<div class="block">
+<div class="block">
+	<a href="#"
+	   class="button button-large button-fill button-preloader ${$store.getters.isSigningUp.value ? 'button-loading' : ''}"
+	@click=${signUp}
+	>
+	<span class="preloader"></span>
+	<span>Sign Up</span>
+</a>
+</div>
+		</div>
+<div class="list">
+<div class="block-footer">
+	<p>
+		Click <a href="/auth/sign-in/" class="link ">here</a> if you already have an account
+	</p>
+</div>
+</div>
+		</form>
+		</div>
+
+		</div>
+		</template>
+<script>
+
+import { NativeBiometric, BiometryType } from "capacitor-native-biometric";
+
+import { getAuth, setPersistence, browserSessionPersistence, browserLocalPersistence, getRedirectResult, GoogleAuthProvider, TwitterAuthProvider, FacebookAuthProvider, GithubAuthProvider } from "firebase/auth";
+
+export default (props, {$f7ready, $f7, $f7route, $on, $update, $store}) => {
+
+    let imagesLogoUrl = $f7.params.assets.images.logo;
+
+    let isSigningUp = $store.getters.isSigningUp.value;
+
+    let showPasswordText = false;
+
+    let clientId = $store.getters.clientId.value;
+
+    let clientSecret = $store.getters.clientSecret.value;
+
+    let grantType = $store.getters.grantType.value;
+
+    let deviceInfo = $store.getters.deviceInfo.value;
+
+    let userData = false;
+
+    let firstname = '';
+
+    let lastname = '';
+
+    let email = '';
+
+    let password1 = '';
+
+    let password2 = '';
+
+    const updateSignInFirstname  = function (e) {
+        firstname = e.target.value;
+        $update();
+    };
+
+    const updateSignInLastname  = function (e) {
+        lastname = e.target.value;
+        $update();
+    };
+
+    const updateSignInEmail = function (e) {
+        email = e.target.value;
+        $update();
+    };
+
+    const updateSignInPassword1 = function (e) {
+        password1 = e.target.value;
+        $update();
+    };
+
+    const updateSignInPassword2 = function (e) {
+        password2 = e.target.value;
+        $update();
+    };
+
+    const showPassword = function (e) {
+        showPasswordText = true;
+        $update();
+    };
+
+    const hidePassword = function (e) {
+        showPasswordText = false;
+        $update();
+    };
+
+    const signUp = (deviceClentRegistrationDataResult) => {
+
+        $store.dispatch('setIsSigningUp', true);
+
+        userData = $f7.form.convertToData('#app-auth-sign-up-form');
+
+        console.log(":: LOGIN :: REQUEST ACCESS TOKEN ::", userData);
+
+        console.log(":: VALIDATE :: userData.firstname ::", (userData.firstname === ""));
+
+        if(userData.firstname === ""){
+
+            $("input[name=firstname]").addClass("input-invalid");
+
+            showToastWithButton( 'First name can not be blank', function () {
+
+                $store.dispatch('setIsSigningUp', false);
+
+            });
+            return;
+
+        }
+
+        console.log(":: VALIDATE :: userData.lastname ::", (userData.lastname === ""));
+
+        if(userData.lastname === ""){
+
+            showToastWithButton( 'Last name can not be blank', function () {
+
+                $store.dispatch('setIsSigningUp', false);
+
+            });
+            return;
+
+        }
+
+        console.log(":: VALIDATE :: userData.email ::", (userData.email === ""));
+
+        if(userData.email === ""){
+
+            showToastWithButton( 'Email address can not be blank', function () {
+
+                $store.dispatch('setIsSigningUp', false);
+
+            });
+            return;
+
+        }
+
+        console.log(":: VALIDATE :: userData.password1 ::", (userData.password1 === ""));
+
+        if(userData.password1 === ""){
+
+            showToastWithButton( 'Password can not be blank', function () {
+
+                $store.dispatch('setIsSigningUp', false);
+
+            });
+            return;
+
+        }
+
+        console.log(":: VALIDATE :: userData.password2 ::", (userData.password2 === ""));
+
+        if(userData.password2 === ""){
+
+            showToastWithButton( 'Please confirm your password', function () {
+
+                $store.dispatch('setIsSigningUp', false);
+
+            });
+            return;
+
+        }
+
+        console.log(":: VALIDATE :: userData.password1 !== userData.password2 ::", (userData.password1 !== userData.password2));
+
+        if(userData.password1 !== userData.password2){
+
+            showToastWithButton( 'The passwords do not match.', function () {
+
+                $store.dispatch('setIsSigningUp', false);
+
+            });
+            return;
+
+        }
+
+        console.log(":: SIGNING UP WITH DATA PARAMS ::", deviceClentRegistrationDataResult);
+
+        // Check clientID and clientSecret
+
+        console.log(":: SIGNING UP >> DO WE HAVE THE CLIENT ID && CLIENT SECRET ::", ($store.getters.clientId.value !== false && $store.getters.clientSecret.value !== false), [$store.getters.clientId.value, $store.getters.clientSecret.value]);
+
+        if ($store.getters.clientId.value === false || $store.getters.clientSecret.value === false) {
+
+            registerClientOnServer(
+                function (deviceClentRegistrationDataResult) {
+
+                    //At least we now have the clientId and clientSecret
+
+                    console.log(":: REGISTER CLIENT :: deviceClentRegistrationDataResult ::", deviceClentRegistrationDataResult);
+
+                    signUp(deviceClentRegistrationDataResult);
+
+                },
+                function (error) {
+
+                    // Error while regisering he client
+
+                    // It could be the network error
+
+                    //registerClientOnServerError
+
+                    $f7.emit("HTTP_ERROR", error);
+
+                },
+            );
+
+        } else {
+
+            registerClientOnServerSuccess($store.getters.clientId.value, $store.getters.clientSecret.value, $store.getters.grantType.value)
+
+        }
+
+    };
+
+    const registerClientOnServer = (callbackSuccess, callbackError) => {
+
+        const data = {
+            deviceInfo: $store.getters.deviceInfo.value,
+            callbackSuccess: function (result) {
+                callbackSuccess(result);
+            },
+            callbackError: function (error) {
+                callbackError(error);
+            }
+        };
+
+        $store.dispatch('ajaxRegisterClient', data);
+
+    };
+
+    const registerClientOnServerSuccess = (clientId, clientSecret, grantType) => {
+
+        console.log(":: GET CLIENT ID & SECRET RESULT :: clientAccessToken ::", clientId, clientSecret, grantType, userData);
+
+        registerUser(
+            userData,
+            function ( userData ) {
+
+                console.log(":: USER REGISTERED ::", clientId, clientSecret, grantType, userData);
+
+                const data = {
+                    clientID: $store.getters.clientId.value,
+                    clientSecret: $store.getters.clientSecret.value,
+                    username: userData.email,
+                    password: userData.password,
+                    grantType: $store.getters.grantType.value,
+                    clientToken: $store.getters.clientToken.value,
+                    callbackSuccess: function (clientAccessToken) {
+                        getClientAccessTokenSuccess(username, password, clientAccessToken);
+                    },
+                    callbackError: function (error) {
+                        $f7.emit("HTTP_ERROR", error);
+                    }
+                };
+
+                console.log(":: LOGIN :: REQUEST ACCESS TOKEN :: REQUEST SETTINGS ::", data);
+
+                $store.dispatch('ajaxGetAccessToken', data);
+
+            },
+            function ( error ) {
+                // registerUserError
+                $f7.emit("HTTP_ERROR", error);
+            }
+        )
+
+    };
+
+    const getClientAccessTokenSuccess = (username, password, payload) => {
+
+        $store.dispatch('setIsSigningIn', false);
+
+        $store.dispatch('setIsSigningUp', false);
+
+        console.log(":: GET CLIENT ACCESS TOKEN RESULT :: clientAccessToken ::", username, password, payload);
+
+        // Check if biometrics are available and which type is supported
+        NativeBiometric.isAvailable().then(
+            (result) => {
+
+                if (result.isAvailable) {
+
+                    // Save user's credentials
+                    NativeBiometric.setCredentials({
+                        username: username,
+                        password: password,
+                        server: $f7.params.id,
+                    }).then();
+
+                }
+
+            });
+
+    };
+
+
+
+    const registerUser = (userData, callbackSuccess, callbackError) => {
+
+        const data = {
+            clientID: $store.getters.clientId.value,
+            clientSecret: $store.getters.clientSecret.value,
+            userData: userData,
+            grantType: $store.getters.grantType.value,
+            clientToken: $store.getters.clientToken.value,
+            callbackSuccess: function (result) {
+                callbackSuccess(result);
+            },
+            callbackError: function (error) {
+                callbackError(error);
+            }
+        };
+
+        console.log(":: REGISTER :: REQUEST ::", data);
+
+        $store.dispatch('ajaxRegisterUser', data);
+
+    };
+
+    $f7ready(() => {
+
+        //
+
+    });
+
+    $on('pageInit', () => {
+
+        // trigger re-render
+        $update();
+
+    });
+
+    $on('pageMounted', (e, page) => {
+        console.log('page mounted');
+    });
+    $on('pageBeforeIn', (e, page) => {
+        console.log('page before in');
+    });
+    $on('pageAfterIn', (e, page) => {
+        console.log('page after in');
+    });
+    $on('pageBeforeOut', (e, page) => {
+        console.log('page before out');
+    });
+    $on('pageAfterOut', (e, page) => {
+        console.log('page after out');
+    });
+    $on('pageBeforeUnmount', (e, page) => {
+        console.log('page before unmount');
+    });
+    $on('pageBeforeRemove', (e, page) => {
+        console.log('page before remove');
+    });
+
+    return $render;
+
+}
+</script>

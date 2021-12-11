@@ -1,0 +1,209 @@
+<template>
+	<div class="page" data-name="home">
+		<!-- Top Navbar -->
+		<div class="navbar">
+
+			<div class="navbar-bg"></div>
+
+			<div class="navbar-inner">
+
+				<div class="left">
+					<a href="#" class="link icon-only panel-open" data-panel="left">
+						<i class="icon f7-icons if-not-md">menu</i>
+						<i class="icon material-icons if-md">menu</i>
+					</a>
+				</div>
+
+				<div class="title sliding text-align-center">
+					Notifications
+				</div>
+
+				<div class="right">
+					<a class="link popover-open" href="#" data-popover=".popover-links-notifications">
+						<i class="icon f7-icons if-not-md">ellipsis_vertical</i>
+						<i class="icon material-icons if-md">more_vert</i>
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Scrollable page content-->
+		<div class="page-content">
+
+			<div class="list media-list">
+
+				<ul>
+
+					${ notificationsObjectArray.map((item, index) => $h`
+
+					<li>
+						<a href="#" class="item-link item-content" @click=${(e) => openNotification(item)} >
+						<div class="item-media">
+							<img src="${imagesLogoUrl}" class="app-portfolio-listview-avatar"/>
+						</div>
+						<div class="item-inner">
+							<div class="item-title-row no-chevron">
+								<div class="item-title">
+									<strong>${item[1].item_title}</strong>
+								</div>
+								<div class="item-after">${item[1].item_after}</div>
+							</div>
+							<div class="item-subtitle">${item[1].item_subtitle}</div>
+						</div>
+					</a>
+				</li>
+
+				`)}
+
+			</ul>
+
+		</div>
+
+	</div>
+
+	<div class="sheet-modal notifications-sheet-swipe-to-close" style="height:auto;">
+		<div class="sheet-modal-inner">
+			<div class="page-content">
+				<img style="width: 100%;" src="${imagesFundUrl}" />
+				<div class="block-title block-title-medium">${notificationItem.item_title}</div>
+				<div class="block">
+					<p><b>${notificationItem.item_subtitle}</b></p>
+					<p>${notificationItem.item_description}</p>
+					<p class="text-color-theme-color"><b>${notificationItem.item_after}</b></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popover popover-links-notifications">
+		<div class="popover-inner">
+			<div class="list">
+				<ul>
+					<li><a class="list-button item-link" href="#">Refresh</a></li>
+					<li><a class="list-button item-link" href="#">Clear</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+		</template>
+
+<script>
+export default (props, {$f7ready, $f7, $f7route, $on, $update}) => {
+
+    console.log(":: IMAGES ASSETS LOGO ::", window.imageAssets);
+
+    let imagesLogoUrl = $f7.params.assets.images.logo;
+
+    let imagesFundUrl = $f7.params.assets.images.fund;
+
+
+
+    let userId = 0;
+
+    let notificationsObject = {};
+
+    let notificationsObjectArray = [];
+
+    let notificationItem = {
+        item_title: "",
+        item_subtitle: "",
+        item_after: "",
+        item_description: "",
+    };
+
+    let notificationsSheetModal;
+
+    $f7ready(() => {
+
+        //
+
+    });
+
+    const openNotification = function(item) {
+
+        notificationItem = item[1];
+
+        notificationsSheetModal.open();
+
+        console.log("DATA_INDEX", notificationItem);
+
+        $update();
+
+    };
+
+    const getData = function(){
+
+        let url = `https://hyperefficient2.net/inbox/tsif/portfolio/get_notifications/${userId}`;
+
+        $f7.request.post(url, { userId:userId })
+            .then(function (res) {
+
+                notificationsObject = JSON.parse(res.data);
+
+                notificationsObjectArray = Object.keys(notificationsObject).map((key) => [Number(key), notificationsObject[key]]);
+
+                console.log(">>> notificationsObject, notificationsObject", notificationsObject, notificationsObjectArray);
+
+                $update();
+
+            });
+
+    };
+
+    $on('pageInit', () => {
+
+        userId = $f7.params.data.userId;
+
+        getData();
+
+        // Create swipe-to-close Sheet
+        notificationsSheetModal = $f7.sheet.create({
+            el: '.notifications-sheet-swipe-to-close',
+            swipeToClose: true,
+            backdrop: true,
+        });
+
+        $f7.on("OPEN_NOTIFICATION", function (_notificationItem) {
+
+            notificationItem = _notificationItem;
+
+            setTime
+
+        });
+
+        // trigger re-render
+        $update();
+
+    });
+
+    $on('pageMounted', (e, page) => {
+        console.log('page mounted');
+    });
+    $on('pageBeforeIn', (e, page) => {
+        console.log('page before in');
+    });
+    $on('pageAfterIn', (e, page) => {
+        console.log('page after in');
+    });
+    $on('pageBeforeOut', (e, page) => {
+        console.log('page before out');
+    });
+    $on('pageAfterOut', (e, page) => {
+        console.log('page after out');
+    });
+    $on('pageBeforeUnmount', (e, page) => {
+        console.log('page before unmount');
+    });
+    $on('pageBeforeRemove', (e, page) => {
+        console.log('page before remove');
+    });
+
+    return $render;
+
+}
+</script>

@@ -1,0 +1,1132 @@
+<template>
+
+        <div id="app">
+
+            ${$store.getters.loggedIn.value && $h`
+
+            <!-- Left panel with cover effect-->
+            <div class="panel panel-left panel-cover panel-init">
+                <div class="view">
+                    <div class="page">
+                        <div class="page-content">
+
+                            <div class="block drawer-header">
+                                <div class="list media-list menu-list no-hairline">
+                                    <ul class="bg-transparent">
+                                        <li>
+                                            <a href="#" class="item-content">
+
+                                                ${($store.getters.accountInfo.value.photoURL && $store.getters.accountInfo.value.photoURL !== "" && $store.getters.accountInfo.value.photoURL !== "DEFAULT") ? $h`
+
+                                                <div class="item-media">
+                                                    <img src="${$store.getters.accountInfo.value.photoURL}" width="42" style="border-radius: 50%;" />
+                                                </div>
+
+                                                ` : $h`
+
+                                                <div class="item-media">
+                                                    <i class="icon f7-icons color-white font-size-40px">person_alt_circle</i>
+                                                </div>
+
+                                                `}
+
+                                                <div class="item-inner">
+                                                    <div class="item-title-wrap">
+                                                        <div class="item-title text-color-white">${$store.getters.accountInfo.value.displayName}</div>
+                                                    </div>
+                                                    <div class="item-subtitle text-color-white">${$store.getters.accountInfo.value.email}</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <div class="list medium-inset no-chevron no-hairline panel-left-drawer-menu-items">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="item-link item-content"  @click=${(e) => openTab(2)} >
+                                            <div class="item-media">
+                                                <i class="f7-icons text-color-gray font-size-24px">house</i>
+                                            </div>
+                                            <div class="item-inner">
+                                                <div class="item-title">
+                                                    Home
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="item-link item-content"  @click=${(e) => openTab(1)} >
+                                            <div class="item-media">
+                                                <i class="f7-icons text-color-gray font-size-24px">bell</i>
+                                            </div>
+                                            <div class="item-inner">
+                                                <div class="item-title">
+                                                    Notifications
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="item-link item-content"  @click=${(e) => openTab(3)} >
+                                            <div class="item-media">
+                                                <i class="f7-icons text-color-gray font-size-24px">gear</i>
+                                            </div>
+                                            <div class="item-inner">
+                                                <div class="item-title">
+                                                    Settings
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="item-link item-content"  @click=${(e) => logOut()} >
+                                            <div class="item-media">
+                                                <i class="f7-icons text-color-gray font-size-24px">square_arrow_left</i>
+                                            </div>
+                                            <div class="item-inner">
+                                                <div class="item-title">
+                                                    Sign Out
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right panel with reveal effect-->
+            <div class="panel panel-right panel-reveal ">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">My Account</div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="block-title">Account Number: ${$store.getters.userInfo.value.accountNumber}</div>
+                        <div class="list no-hairlines-md">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">First Name</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" placeholder="Your name" value="${$store.getters.userInfo.value.firstname}" @input="${updateFirstname}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">last Name</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" placeholder="Your name" value="${$store.getters.userInfo.value.lastname}" @input="${updateLastname}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">E-mail</div>
+                                            <div class="item-input-wrap">
+                                                <input type="email" placeholder="E-mail" value="${$store.getters.firebaseUserInfo.value.email}" @input="${updateEmail}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">ID Number</div>
+                                            <div class="item-input-wrap">
+                                                <input type="url" placeholder="ID Number / Passport / License" value="${$store.getters.userInfo.value.idnumber}" @input="${updateIdNumber}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Phone</div>
+                                            <div class="item-input-wrap">
+                                                <input type="tel" placeholder="Phone" value="${$store.getters.firebaseUserInfo.value.phoneNumber}" @input="${updatePhoneNumber}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Gender</div>
+                                            <div class="item-input-wrap">
+                                                <select>
+                                                    <option>${$store.getters.userInfo.value.gender}</option>
+                                                    <option>Male</option>
+                                                    <option>Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Birth date</div>
+                                            <div class="item-input-wrap">
+                                                <input type="date" placeholder="Birth day" value="${$store.getters.userInfo.value.dob}" @input="${updateDOB}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Views/Tabs container -->
+            <div class="views tabs safe-areas">
+
+                <!-- Tabbar for switching views-tabs -->
+                <div class="toolbar toolbar-bottom tabbar-labels">
+                    <div class="toolbar-inner">
+                        <a href="#view-wallet" class="tab-link">
+                            <i class="icon f7-icons if-ios ios-only">wallet</i>
+                            <i class="icon material-icons if-md md-only">account_balance_wallet</i>
+                            <span class="tabbar-label">Wallet</span>
+                        </a>
+                        <a href="#view-dapps" class="tab-link">
+                            <i class="icon f7-icons if-ios ios-only">square_grid_2x2</i>
+                            <i class="icon material-icons if-md md-only">apps</i>
+                            <span class="tabbar-label">DApps</span>
+                        </a>
+                        <a href="#view-home" class="tab-link tab-link-active" data-tab-index="3">
+                                    <span class="centerbutton button button-fill">
+                                        <i class="icon f7-icons if-ios ios-only icon-only">house</i>
+                                        <i class="material-icons if-md md-only icon-only">home</i>
+                                    </span>
+                        </a>
+                        <a href="#view-defi" class="tab-link">
+                            <i class="icon f7-icons if-ios ios-only">building_columns</i>
+                            <i class="icon material-icons if-md md-only">account_balance</i>
+                            <span class="tabbar-label">DeFi</span>
+                        </a>
+                        <a href="#view-nfts" class="tab-link">
+                            <i class="icon f7-icons ios-only if-ios">shippingbox</i>
+                            <i class="icon material-icons if-md md-only">category</i>
+                            <span class="tabbar-label">NFTs</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
+                <div id="view-wallet" class="view view-init tab" data-name="wallet" data-url="/wallet-landing/">
+                    <!-- Home page will be loaded here dynamically from / route -->
+                </div>
+
+                <!-- Catalog View -->
+                <div id="view-dapps" class="view view-init tab" data-name="dapps" data-url="/dapps-landing/">
+                    <!-- Catalog page will be loaded here dynamically from /catalog/ route -->
+                </div>
+
+                <!-- Settings View -->
+                <div id="view-home" class="view view-init tab view-main tab-active" data-name="home" data-url="/">
+                    <!-- Settings page will be loaded here dynamically from /settings/ route -->
+                </div>
+
+                <!-- Settings View -->
+                <div id="view-defi" class="view view-init tab" data-name="defi" data-url="/defi-landing/">
+                    <!-- Settings page will be loaded here dynamically from /settings/ route -->
+                </div>
+
+                <!-- Settings View -->
+                <div id="view-nfts" class="view view-init tab" data-name="nfts" data-url="/nfts-landing/">
+                    <!-- Settings page will be loaded here dynamically from /settings/ route -->
+                </div>
+
+            </div>
+
+            `}
+
+            ${!$store.getters.loggedIn.value && $h`
+
+            <div class="login-screen modal-in">
+                <div class="view view-init" id="view-auth" data-url="/auth-sign-in/"></div>
+            </div>
+
+            `}
+
+            <div class="popover popover-links-generic">
+                <div class="popover-inner">
+                    <div class="list">
+                        <ul>
+                            <li><a class="list-button item-link" href="#">Refresh</a></li>
+                            <li><a class="list-button item-link" href="#">Clear</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+        </template>
+
+<script>
+
+// Import the functions you need from the SDKs you need
+import konstants from '../libs/constants.js';
+
+import helper from '../libs/helper.js';
+
+import { initializeApp } from "firebase/app";
+
+import { getAuth, onAuthStateChanged, signOut  } from "firebase/auth";
+
+import { FCM } from "@capacitor-community/fcm";
+
+import { PushNotifications } from '@capacitor/push-notifications';
+
+import { StatusBar, Style } from '@capacitor/status-bar';
+
+import { SplashScreen } from '@capacitor/splash-screen';
+
+export default (props, {$f7ready, $f7, $f7route, $on, $update, $store}) => {
+
+    let deviceReady = false;
+
+    let loggedIn = $store.getters.loggedIn.value;
+
+    // User account info
+    let username = $store.getters.userInfo.value.username;
+    let password = $store.getters.userInfo.value.password;
+
+    let userId = $store.getters.userInfo.value.userId;
+    let userAccountNumber = $store.getters.userInfo.value.userAccountNumber;
+
+    let firstname = $store.getters.userInfo.value.firstname;
+    let lastname = $store.getters.userInfo.value.lastname;
+    let idnumber = $store.getters.userInfo.value.idnumber;
+    let dob = $store.getters.userInfo.value.dob;
+    let gender = $store.getters.userInfo.value.gender;
+    let bio = $store.getters.userInfo.value.bio;
+    let roles = $store.getters.userInfo.value.roles;
+
+    // Firebase Data
+    let photoURL = $store.getters.firebaseUserInfo.value.photoURL;
+    let displayName = $store.getters.firebaseUserInfo.value.displayName;
+    let phoneNumber = $store.getters.firebaseUserInfo.value.phoneNumber;
+    let email = $store.getters.firebaseUserInfo.value.email;
+    let uid = $store.getters.firebaseUserInfo.value.uid;
+
+    $f7.on("INITIALIZE_FIREBASE", function (){
+
+        initializeFirebase();
+
+    });
+
+    $f7.on("FIREBASE_USER_AUTH_STATE_CHANGED", function (user){
+
+        console.log(":: EVENT FIREBASE_USER_AUTH_STATE_CHANGED ::", user);
+
+    });
+
+    $f7.on(konstants.events.device.DEVICE_READY, function ( deviceData ){
+
+        loadSettings( deviceData );
+
+    });
+
+    $f7.on('SAVE_SETTINGS_FORM_UPDATED', function ( settingsData ){
+
+        saveSettings( settingsData, true );
+
+    });
+
+    $f7.on('SAVE_SETTINGS', function ( settingsData ){
+
+        saveSettings( settingsData, falsw );
+
+    });
+
+    $f7.on('SETTINGS_LOADED', function ( settingsData ){
+
+        refreshedSettings( settingsData, false );
+
+    });
+
+    $f7.on('SETTINGS_SAVED', function ( settingsData ){
+
+        refreshedSettings( settingsData );
+
+    });
+
+    const refreshedSettings = (settingsData) => {
+
+        console.log(":: SETTINGS REFRESHED ::", ($store.getters.settings.value === settingsData), $store.getters.settings.value);
+
+        if(settingsData === null){
+
+            saveSettings({
+                    allow_push_notifications: ['on'],
+                    auto_lock: [],
+                    currency: "USD",
+                    enable_2fa: [],
+                    enable_dark_theme: [],
+                    show_balances: ['on'],
+                },
+                false
+            );
+
+        }
+
+        validateSettings(settingsData);
+
+    };
+
+    const saveSettings = (settingsData, silenceEmitter) => {
+
+        if(typeof settingsData === "object") {
+
+            console.log(":: SAVE SETTINGS FUNCTION :: CALL EMITTER ::", !silenceEmitter, settingsData);
+
+            $store.dispatch('setSettings', settingsData);
+
+            if(silenceEmitter) {
+
+                validateSettings(settingsData);
+
+            }else{
+
+                $f7.emit("SETTINGS_SAVED", settingsData);
+
+            }
+
+        }
+
+    };
+
+    const loadSettings = ( deviceData ) => {
+
+        $store.dispatch('restoreSettings', function (settingsData) {
+
+            if(typeof settingsData === "object") {
+
+                $f7.emit("SETTINGS_LOADED", settingsData);
+
+                $f7.emit("SETTINGS_FILL_IN_FORM", settingsData);
+
+                $f7.form.fillFromData('#app-settings-form', settingsData);
+
+            }
+
+        });
+
+    };
+
+    const validateSettings = (settingsData) => {
+
+        const _settings = $store.getters.settings.value;
+
+        const isWeb = true;
+
+        console.table([_settings]);
+
+        if(typeof _settings === 'object') {
+
+            if(!isWeb) {
+
+                // Display content under transparent status bar (Android only)
+                StatusBar.setOverlaysWebView({overlay: true});
+
+                $f7.statusbar.show();
+
+            }
+
+            if ('enable_dark_theme' in settingsData) {
+
+                if (settingsData.enable_dark_theme) {
+
+                    console.warn(":: SETTINGS :: enable_dark_theme ::",(settingsData.enable_dark_theme[0] === 'on'),  settingsData.enable_dark_theme);
+
+                    if ((settingsData.enable_dark_theme.length) > 0 && (settingsData.enable_dark_theme[0] === 'on')) {
+
+                        $('body').addClass('theme-dark');
+
+                        if (!isWeb) {
+
+                            StatusBar.setStyle({style: Style.Dark});
+
+                            StatusBar.setBackgroundColor({color: '#000000'});
+
+                        }
+
+                    } else {
+
+                        $('body').removeClass('theme-dark');
+
+                        if(!isWeb) {
+
+                            StatusBar.setStyle({style: Style.Dark});
+
+                            StatusBar.setBackgroundColor({color: '#04a8f2'});
+
+                        }
+
+                    }
+
+                }
+
+            } else {
+
+                if(!isWeb) {
+
+                    StatusBar.setStyle({style: Style.Dark});
+
+                    StatusBar.setBackgroundColor({color: '#04a8f2'});
+
+                }
+
+            }
+
+        }
+
+        return false;
+
+    };
+
+    const initializeFirebase =  () => {
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCltt-4iQEztk2AoJdkZkQOCib1jBTUuQU",
+            authDomain: "mvc-oauth-2.firebaseapp.com",
+            projectId: "mvc-oauth-2",
+            storageBucket: "mvc-oauth-2.appspot.com",
+            messagingSenderId: "535761034253",
+            appId: "1:535761034253:web:d937a275719e6129744944",
+            measurementId: "G-7PBQ4LR0T1"
+        };
+
+        const firebaseApp = initializeApp(firebaseConfig);
+
+        // Initialize Firebase
+        $f7.params.apps.firebase = firebaseApp;
+
+        $f7.emit("FIREBASE_READY", firebaseApp);
+
+        const auth = getAuth(firebaseApp);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                const firebaseUserData = {
+                    displayName: user.displayName,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber,
+                    photoURL: user.photoURL,
+                    uid: user.uid,
+                    providerId: user.providerData[0].providerId,
+                };
+
+                $f7.emit("FIREBASE_USER_SIGN_IN", firebaseUserData);
+
+                $f7.emit("FIREBASE_USER_AUTH_STATE_CHANGED", firebaseUserData);
+
+                $store.dispatch('setFirebaseUserData', firebaseUserData);
+
+                $store.dispatch('setLoggedIn', true);
+
+                // ...
+            } else {
+                // User is signed out
+                // ...
+                const firebaseUserData = {
+                    displayName: "",
+                    email: "",
+                    phoneNumber: "",
+                    photoURL: "",
+                    uid: "",
+                    providerId: "",
+                };
+
+                $f7.emit("FIREBASE_USER_SIGN_OUT", false);
+
+                $f7.emit("FIREBASE_USER_AUTH_STATE_CHANGED", false);
+
+                $store.dispatch('setFirebaseUserData', firebaseUserData);
+
+                $store.dispatch('setLoggedIn', false);
+
+            }
+        });
+
+        let deviceInfo = $store.getters.deviceInfo.value;
+
+        console.log(":: PUSH NOTIFICATIONS ::", deviceInfo);
+
+        if( deviceInfo.platform !== "web") {
+
+            //initializeFirebaseCloudMessaging();
+
+            //initializePushNotifications();
+
+        }
+
+        $update();
+
+    };
+
+
+    const initializeFirebaseCloudMessaging = async () => {
+
+        // external required step
+        // register for push
+        await PushNotifications.requestPermissions();
+        await PushNotifications.register();
+
+        // Get FCM token instead the APN one returned by Capacitor
+        FCM.getToken()
+            .then((r) => {
+
+                console.log(":: SAVE GOOGLE FCM TOKEN ::", r.token);
+
+                $store.dispatch('setFirebaseCloudMessagingToken', r.token);
+
+                $store.dispatch('setServerFirebaseCloudMessagingToken', r.token);
+
+                $f7.on("SUBSCRIBE_TO_CHANNELS", ( channels ) => {
+
+                    for (const [key, value] of Object.entries(channels)) {
+
+                        FCM.subscribeTo({ topic: value })
+                            .then((r) => {
+                                console.log(":: Subscribed to topic ::", key, value);
+                            })
+                            .catch((err) => console.log(":: Error subscribing to topic ::", err));
+
+                    }
+
+                });
+
+            })
+            .catch((err) => console.log(err));
+
+    };
+
+    const initializePushNotifications = async () => {
+
+        // Request permission to use push notifications
+        // iOS will prompt user and return if they granted permission or not
+        // Android will just grant without prompting
+        PushNotifications.requestPermissions().then(result => {
+            if (result.receive === 'granted') {
+                // Register with Apple / Google to receive push via APNS/FCM
+                PushNotifications.register();
+            } else {
+                // Show some error
+            }
+        });
+
+        //Types are not supported b the current Javascript version
+
+        PushNotifications.addListener('registration', (token) => {
+            alert('Push registration success, token: ' + token.value);
+        });
+
+        PushNotifications.addListener('registrationError', (error) => {
+            alert('Error on registration: ' + JSON.stringify(error));
+        });
+
+        PushNotifications.addListener(
+            'pushNotificationReceived',
+            (notification) => {
+                alert('Push received: ' + JSON.stringify(notification));
+            },
+        );
+
+        PushNotifications.addListener(
+            'pushNotificationActionPerformed',
+            (notification) => {
+                alert('Push action performed: ' + JSON.stringify(notification));
+            },
+        );
+
+    };
+
+
+    const initializeBiometric = () => {
+
+        // Check if biometrics are available and which type is supported
+        NativeBiometric.isAvailable().then(
+            (result) => {
+
+                if (result.isAvailable) {
+
+                    // Get user's credentials
+                    NativeBiometric.getCredentials({
+                        server: $f7.params.id,
+                    }).then((credentials) => {
+
+                        const biometricData = {
+                            credentials: credentials,
+                            biometryType: result.biometryType,
+                        };
+
+                        $store.dispatch('setBiometricIsReady', true);
+
+                        $store.dispatch('setBiometricType', result.biometryType);
+
+                        //TODO: delete credentials key ONLY on production
+
+                        $f7.emit("BIOMETRIC_READY", biometricData);
+
+                        $update();
+
+                    });
+
+                }
+            },
+            (error) => {
+                // Couldn't check availability
+            }
+        );
+
+        $update();
+
+    };
+
+    const updateUserInfo = (data) => {
+
+        console.log("::UPDATE USER DATA ::", data);
+
+        $store.dispatch('addUserInfo', data);
+
+        $update();
+
+    };
+
+    const updateFirebaseUserInfo = (data) => {
+
+        console.log("::UPDATE FIREBASE USER DATA ::", data);
+
+        $store.dispatch('addFirebaseUserInfo', data);
+
+        $update();
+
+    };
+
+    const updateUsername = (e) => {
+        username = e.target.value;
+        $update();
+    };
+
+    const updatePassword = (e) => {
+        password = e.target.value;
+        $update();
+    };
+
+    const updateFirstname = (e) => {
+        firstname = e.target.value;
+        displayName = firstname + " " + lastname;
+        $update();
+    };
+
+    const updateLastname = (e) => {
+        lastname = e.target.value;
+        displayName = firstname + " " + lastname;
+        $update();
+    };
+
+    const updateIdNumber = (e) => {
+        idnumber = e.target.value;
+        $update();
+    };
+
+    const updateEmail = (e) => {
+        email = e.target.value;
+        $update();
+    };
+
+    const updatePhoneNumber = (e) => {
+        phoneNumber = e.target.value;
+        $update();
+    };
+
+    const updateDOB = (e) => {
+        dob = e.target.value;
+        $update();
+    };
+
+    const updateBIO = (e) => {
+        bio = e.target.value;
+        $update();
+    };
+
+    const openView = (path) => {
+
+    };
+
+    const openTab = (num) => {
+
+    };
+
+    const addEventListeners = () => {
+
+        $f7.on("HTTP_ERROR", function ( errors ) {
+
+            httpError( errors );
+
+        })
+
+    };
+
+    const setUp = () => {
+
+        const devicePrivateKey = $store.getters.devicePrivateKey.value;
+
+        const devicePublicKey = $store.getters.devicePublicKey.value;
+
+        addEventListeners();
+
+        if(!devicePrivateKey) {
+
+            $store.dispatch('restoreDevicePrivateKey', function ( privateKey ) {
+
+                /*
+
+                console.log(":: RESTORING PRIVATE KEY ::", privateKey,
+                    [privateKey, $store.getters.devicePrivateKey.value, $store.getters.devicePublicKey.value,
+                        [(privateKey === null), (!privateKey), (typeof privateKey === "undefined"), (privateKey === "undefined")]
+                    ]
+                );
+
+                */
+
+                if( !privateKey || typeof privateKey === "undefined" || privateKey === "undefined"){
+
+                    helper.encryption.generateKeyPair(
+                        function(key){
+
+                            // now you get the JWK public and private keys
+                            const privateKey = key.privateKey;
+                            const publicKey = key.publicKey;
+
+                            $store.dispatch('setDevicePrivateKey', privateKey);
+
+                            $store.dispatch('saveDevicePrivateKey', function (saveDevicePrivateKeyResult) {
+
+                                $store.dispatch('setDevicePublicKey', publicKey);
+
+                                $store.dispatch('saveDevicePublicKey', function (saveDevicePublicKeyResult) {
+
+                                    //console.log(":: SETUP :: DISPATCH ::  saveDevicePrivateKeyResult, saveDevicePublicKeyResult ::", saveDevicePrivateKeyResult, saveDevicePublicKeyResult);
+
+                                    setUp();
+
+                                });
+
+                            });
+
+                        },
+                        function (error) {
+
+                            console.log(":: ERROR GENERATING KEY PAIR::", error);
+
+                        },
+                        1024
+                    );
+
+
+                }else{
+
+                    setUp();
+
+                }
+
+            });
+
+        } else {
+
+            if(!devicePublicKey) {
+
+                $store.dispatch('restoreDevicePublicKey', function (publicKey) {
+
+                    $store.dispatch('setDevicePublicKey', publicKey);
+
+                    $store.dispatch('saveDevicePublicKey', function (saveDevicePublicKeyResult) {
+
+                        setUp();
+
+                    });
+
+                });
+
+            }else{
+
+                console.log(" :: DEVICE KEY PAIR LOADED SUCCESSFULLY ::", [devicePrivateKey, devicePublicKey]);
+
+                initializeFirebase();
+
+                //initializeBiometric();
+
+            }
+
+        }
+
+    };
+
+    const logOut = () => {
+
+        // Destroy server session
+        // $store.dispatch('authSignOut', false);
+
+        // Logout firebase
+        signOut(getAuth($f7.params.apps.firebase));
+
+    };
+
+    let toastWithButton;
+
+    const showToastWithButton = (message, callbackFunction) => {
+        // Create toast
+        if (message) {
+            toastWithButton = $f7.toast.create({
+                text: message,
+                closeButton: true,
+                closeButtonText: 'Close',
+                closeButtonColor: 'red',
+                on: {
+                    close: function () {
+                        if(typeof callbackFunction === "function"){
+                            callbackFunction();
+                        }
+                    },
+                }
+            });
+            // Open it
+            toastWithButton.open();
+        }
+    };
+
+    const httpError = (error) => {
+
+        $store.dispatch('setIsSigningIn', false);
+
+        $store.dispatch('setIsSigningUp', false);
+
+        if(error.hasOwnProperty('error')){
+
+            error = error.error;
+
+        }
+
+        let error_code = 0;
+
+        if('code' in error){
+
+            error_code = error.code;
+
+        } else {
+
+            error_code = error.status;
+
+        }
+
+        console.error(":: HTTP_ERROR ::", error);
+
+        switch(error_code){
+
+            case 500: {
+
+                showToastWithButton('The server encountered an unexpected condition which prevented it from fulfilling the request. Please contact the systems administrator for assistance.');
+
+                break;
+
+            }
+
+            case 500: {
+
+                showToastWithButton('The server is currently unable to handle the request due to a temporary overloading or maintenance of the server.');
+
+                break;
+
+            }
+
+            case 400: {
+
+                if( typeof error.response === "object" && error.response.hasOwnProperty('messages') && error.response.messages !== ""){
+
+                    let errorsHtml = '<ul>';
+
+                    for(let i in error.response.messages){
+
+                        errorsHtml += '<li>' + error.response.messages[i] + '</li>';
+
+                    }
+
+                    errorsHtml += '</ul>';
+
+                    showToastWithButton('Please correct the following errors<br>'+errorsHtml);
+
+                }else{
+
+                    showToastWithButton("<h3>Bad Request</h3> The request could not be understood by the server due to malformed syntax.");
+
+                }
+
+                break;
+
+            }
+
+            case 401 : {
+
+                showToastWithButton("<h3>Unauthorized</h3> The requested resource requires user authentication.");
+                break;
+
+            }
+
+            case 402 : {
+
+                showToastWithButton("<h3>Payment Required</h3> The requested resource requires a payment.");
+                break;
+
+            }
+
+            case 403 : {
+
+                showToastWithButton("<h3>Forbidden</h3> The requested resource could not fulfill your request due to reason known to it.");
+                break;
+
+            }
+
+            case 404 : {
+
+                showToastWithButton("<h3>Not Found</h3> The server has not found anything matching the Request-URI. No indication is given of whether the condition is temporary or permanent.");
+                break;
+
+            }
+
+            case 0: {
+
+                if( typeof error.response === "object" && error.response.hasOwnProperty('messages') && error.response.messages !== ""){
+
+                    showToastWithButton("<h3>"+error.message+"</h3>"+error.response.error_description);
+
+                }else{
+
+                    showToastWithButton("<h3>Network Error</h3> Connection to the server could not be established. Please try again later");
+
+                }
+
+                break;
+
+            }
+
+            default : {
+
+                showToastWithButton(`<h3>Unknown Error</h3> There was an error (Error: ${error_code}) while trying to process your request. Please contact your administrator for assistance.`);
+                break;
+
+            }
+
+        }
+
+    };
+
+    $f7ready( function() {
+
+        // now it is safe to call Framework7 APIs
+
+    });
+
+    $on('pageInit', (e, page) => {
+
+        console.log(":: PAGE INIT ::", e, page);
+
+        if(!deviceReady){
+
+            helper.device.getDeviceData(function (deviceData) {
+
+                deviceData.data.raw = $f7.params.device;
+
+                deviceData.hasOwnProperty('key')  ? $store.dispatch('setDeviceKey',  deviceData.key)  : null;
+
+                deviceData.hasOwnProperty('data') ? $store.dispatch('setDeviceInfo', deviceData.data) : null;
+
+                deviceReady = true;
+
+                $f7.emit(konstants.events.device.DEVICE_READY, deviceData);
+
+                let _deviceData = $store.getters.deviceInfo.value;
+
+                let _deviceKey = $store.getters.deviceKey.value;
+
+                $f7.name = _deviceData.name;
+                $f7.params.name = _deviceData.name;
+
+                $f7.id = _deviceData.id;
+                $f7.params.id = _deviceData.id;
+
+                $f7.build = _deviceData.build;
+                $f7.params.build = _deviceData.build;
+
+                $f7.version = _deviceData.version;
+                $f7.params.version = _deviceData.version;
+
+                console.log(":: DISPATCH DEVICE READY EVENT ::", [$f7.id , $f7.params.id , _deviceData.id], _deviceData, _deviceKey);
+
+                setUp();
+
+                $update();
+
+            });
+
+        }
+
+        // trigger re-render
+        $update();
+
+    });
+
+    $on('pageMounted', (e, page) => {
+        console.log('page mounted');
+    });
+    $on('pageBeforeIn', (e, page) => {
+        console.log('page before in');
+    });
+    $on('pageAfterIn', (e, page) => {
+        console.log('page after in');
+    });
+    $on('pageBeforeOut', (e, page) => {
+        console.log('page before out');
+    });
+    $on('pageAfterOut', (e, page) => {
+        console.log('page after out');
+    });
+    $on('pageBeforeUnmount', (e, page) => {
+        console.log('page before unmount');
+    });
+    $on('pageBeforeRemove', (e, page) => {
+        console.log('page before remove');
+    });
+
+    return $render;
+
+}
+</script>
