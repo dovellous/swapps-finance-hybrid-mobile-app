@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> should render and match the snapshot 1`] = `
+<BrowserRouter>
+  <Helmet
+    defaultTitle="SwappsFinance"
+    defer={true}
+    encodeSpecialCharacters={true}
+    htmlAttributes={
+      Object {
+        "lang": "en-US",
+      }
+    }
+    prioritizeSeoTags={false}
+    titleTemplate="%s - SwappsFinance"
+  >
+    <meta
+      content="SwappsFinance is a next-generation DEX built by Genius Contracts specifically for token-to-token swaps on Tezos. SwappsFinance is governed by SalsaDAO ($sDAO)."
+      name="description"
+    />
+  </Helmet>
+  <NavBar />
+  <Routes>
+    <Route
+      element={<Unknown />}
+      path="/"
+    />
+    <Route
+      element={<Unknown />}
+      path="/nft"
+    />
+    <Route
+      element={<Unknown />}
+      path="*"
+    />
+  </Routes>
+  <Memo(l) />
+</BrowserRouter>
+`;
