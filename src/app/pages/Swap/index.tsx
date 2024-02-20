@@ -145,7 +145,7 @@ export function Swap() {
         <title>Swap</title>
         <meta
           name="description"
-          content="SwappsFinance is a next-generation DEX built by Genius Contracts specifically for token-to-token swaps on Tezos. 
+          content="SwappsFinance is a next-generation DEX built by Dovellous Technologies specifically for token-to-token swaps on Tezos. 
           SwappsFinance is governed by SalsaDAO ($sDAO)."
         />
       </Helmet>

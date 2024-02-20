@@ -21,7 +21,7 @@ export function App() {
       <Helmet titleTemplate="%s - SwappsFinance" defaultTitle="SwappsFinance">
         <meta
           name="description"
-          content="SwappsFinance is a next-generation DEX built on top of Genius Contracts' SwappsFinance specifically for token-to-token swaps on Tezos."
+          content="SwappsFinance is a next-generation DEX built on top of Dovellous Technologies' SwappsFinance specifically for token-to-token swaps on Tezos."
         />
       </Helmet>
       <NavBar />
